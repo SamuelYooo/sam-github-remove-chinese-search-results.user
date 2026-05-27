@@ -2,16 +2,16 @@
 
 ## Project Structure & Module Organization
 
-This repository currently contains a single Tampermonkey userscript:
+This repository centers on one Tampermonkey userscript:
 `sam-github-remove-chinese-search-results.user.git.js`. Treat it as the source
-of truth for the browser script, including the `// ==UserScript==` metadata
-block, blacklist constants, DOM observer, and `Check()` filtering routine. The
-`.omx/` directory is local agent/runtime state and should not be treated as
-application source.
+of truth for metadata, built-in filter rules, DOM scanning, mutation handling,
+and local custom-rule support. Regression coverage lives in
+`tests/filter-rules.test.cjs`. The `.omx/` directory is local agent/runtime
+state and should not be treated as application source.
 
-If the script grows, split reusable logic into `src/` and place tests under
-`tests/`; keep the userscript entry file small and focused on metadata,
-initialization, and browser integration.
+If the script grows further, split reusable logic into `src/`; keep the
+userscript entry file focused on metadata, initialization, and browser
+integration.
 
 ## Build, Test, and Development Commands
 
@@ -20,6 +20,7 @@ There is no package manager or build pipeline configured yet.
 - `rg --files` lists tracked project files quickly.
 - `Get-Content ".\sam-github-remove-chinese-search-results.user.git.js"`
   inspects the current script.
+- `node --test tests/filter-rules.test.cjs` runs the lightweight filter tests.
 - Manual development flow: edit the userscript, import or paste it into
   Tampermonkey, then reload `https://github.com/search?...` to verify behavior.
 
@@ -40,19 +41,19 @@ short comment when GitHub-specific markup is involved.
 
 ## Testing Guidelines
 
-No automated tests exist. For each change, manually verify at least one GitHub
-search page where blocked users, exact project names, and keyword-based project
-names should be removed. Confirm that non-blocked results remain visible and
-that the console log only reports intended removals.
+Automated coverage lives in `tests/filter-rules.test.cjs` and uses Node's built-
+in test runner. For each filter change, add or update cases for blocked
+repositories, blocked snippets, and allowed normal repositories. Also manually
+verify at least one GitHub search page and confirm that the console log only
+reports intended removals.
 
-If tests are added later, name them after behavior, for example
-`filters-blocklisted-users.test.js`.
+Name new tests after behavior, for example `filters-blocklisted-users.test.js`.
 
 ## Commit & Pull Request Guidelines
 
-This directory is not currently a Git repository, so no local commit history is
-available. When Git is initialized, use concise imperative commit subjects, for
-example `fix: update GitHub search selector` or `docs: add contributor guide`.
+Use concise imperative commit subjects for routine changes, for example
+`fix: update GitHub search selector` or `docs: add README`. Larger changes
+should follow the repository's Lore-style trailer format when useful.
 
 Pull requests should describe the user-visible filtering change, list manual
 GitHub search cases tested, and include screenshots only when DOM or display
