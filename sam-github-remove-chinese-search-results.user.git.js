@@ -5,6 +5,7 @@
 // @description  隐藏GitHub某些项目，政见不同不是污染中文搜索的理由，关键词拉满就是无耻
 // @license      GPL-3.0 License
 // @author       samuelyoo
+// @github https://github.com/SamuelYooo/sam-github-remove-chinese-search-results.user
 // @match        https://github.com/search?*
 // @downloadURL 
 // @updateURL 
